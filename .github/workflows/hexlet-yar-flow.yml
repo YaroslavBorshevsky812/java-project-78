@@ -1,0 +1,32 @@
+# file: .github/workflows/show-directory.yml
+name: Yar-CI
+# on – определяет события, которые запускают воркфлоу
+on: push
+jobs:
+  # build – произвольно выбранное имя задания
+  # их может быть больше одного
+  build:
+    # операционная система для работы воркфлоу
+    runs-on: ubuntu-latest
+    defaults:
+          run:
+            working-directory: ./app
+    steps: # список шагов, которые надо выполнить
+      # экшен — выполняет какую-то задачу
+      # checkout — клонирует репозиторий
+      - uses: actions/checkout@v4
+      # run – произвольная bash-команда
+      # ls -la выведет содержимое текущего репозитория
+      - run: gradle checkstyleMain
+      - run: gradle checkstyleTest
+      - run: gradle build
+      
+      - name: Publish code coverage
+        uses: paambaati/codeclimate-action@v9.0.0
+        env:
+          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
+          JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
+        with:
+          workingDirectory: ./app
+          coverageCommand: gradle jacocoTestReport
+          coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
