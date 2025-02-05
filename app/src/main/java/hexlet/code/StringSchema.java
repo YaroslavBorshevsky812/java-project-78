@@ -28,7 +28,7 @@ public class StringSchema extends BaseSchema<StringSchema, String> {
             return false;
         }
 
-        if(contains != null && !value.contains(contains)){
+        if (contains != null && !value.contains(contains)) {
             return false;
         }
 

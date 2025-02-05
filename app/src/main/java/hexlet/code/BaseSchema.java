@@ -8,7 +8,7 @@ abstract class BaseSchema<T, V> {
         return (T) this;
     }
 
-    public boolean isRequired(){
+    public boolean isRequired() {
         return required;
     }
 
