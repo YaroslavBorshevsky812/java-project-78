@@ -1,9 +1,19 @@
 package hexlet.code.schemas;
 
-public class NumberSchema extends BaseSchema<NumberSchema> {
+public class NumberSchema extends BaseSchema<Number> {
     private boolean positive = false;
     private Integer min;
     private Integer max;
+    private boolean required = false;
+
+    public NumberSchema required() {
+        this.required = true;
+        return this;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
 
     public NumberSchema positive() {
         this.positive = true;
@@ -16,28 +26,19 @@ public class NumberSchema extends BaseSchema<NumberSchema> {
         return this;
     }
 
-    @Override
-    public boolean isValid(Object value) {
+    public boolean isValid(Number value) {
         if (value == null) {
             return !isRequired();
         }
-
-        if (!(value instanceof Number)) {
+        if (positive && value.doubleValue() <= 0) {
             return false;
         }
-
-        Number numberValue = (Number) value;
-
-        if (positive && numberValue.doubleValue() <= 0) {
+        if (min != null && value.intValue() < min) {
             return false;
         }
-        if (min != null && numberValue.intValue() < min) {
+        if (max != null && value.intValue() > max) {
             return false;
         }
-        if (max != null && numberValue.intValue() > max) {
-            return false;
-        }
-
         return true;
     }
 }

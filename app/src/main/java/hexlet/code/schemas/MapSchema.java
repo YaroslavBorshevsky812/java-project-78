@@ -2,9 +2,19 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema extends BaseSchema<MapSchema> {
+public class MapSchema extends BaseSchema<Map<?, ?>> {
     private Integer size;
     private Map<String, BaseSchema<?>> shape;
+    private boolean required = false;
+
+    public MapSchema required() {
+        this.required = true;
+        return this;
+    }
+
+    public boolean isRequired() {
+        return required;
+    }
 
     public MapSchema sizeof(Integer newSize) {
         this.size = newSize;
@@ -17,43 +27,33 @@ public class MapSchema extends BaseSchema<MapSchema> {
     }
 
     @Override
-    public boolean isValid(Object value) {
+    public boolean isValid(Map<?, ?> value) {
         if (value == null) {
             return !isRequired();
         }
-
-        if (!(value instanceof Map)) {
+        if (size != null && value.size() != size) {
             return false;
         }
-
-        Map<?, ?> mapValue = (Map<?, ?>) value;
-
-        if (size != null && mapValue.size() != size) {
-            return false;
-        }
-
         if (shape != null) {
             for (Map.Entry<String, BaseSchema<?>> entry : shape.entrySet()) {
                 String key = entry.getKey();
                 BaseSchema<?> schema = entry.getValue();
-
-                if (!mapValue.containsKey(key)) {
+                if (!value.containsKey(key)) {
                     return false;
                 }
-                Object mapEntryValue = mapValue.get(key);
-                if (!isValid(schema, mapEntryValue)) {
+                Object mapValue = value.get(key);
+                if (!isValid(schema, mapValue)) {
                     return false;
                 }
             }
         }
-
         return true;
     }
 
-    private boolean isValid(BaseSchema<?> schema, Object value) {
+    private <V> boolean isValid(BaseSchema<V> schema, Object value) {
         if (value == null) {
             return schema.isValid(null);
         }
-        return schema.isValid(value);
+        return schema.isValid((V) value);
     }
 }
