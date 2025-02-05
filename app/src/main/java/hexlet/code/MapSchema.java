@@ -6,13 +6,13 @@ public class MapSchema extends BaseSchema<MapSchema, Map<?, ?>> {
     private Integer size;
     private Map<String, BaseSchema<?, ?>> shape;
 
-    public MapSchema sizeof(Integer size) {
-        this.size = size;
+    public MapSchema sizeof(Integer newSize) {
+        this.size = newSize;
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema<?, ?>> shape) {
-        this.shape = shape;
+    public MapSchema shape(Map<String, BaseSchema<?, ?>> newShape) {
+        this.shape = newShape;
         return this;
     }
 

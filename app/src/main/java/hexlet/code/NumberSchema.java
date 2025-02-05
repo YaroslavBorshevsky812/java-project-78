@@ -10,9 +10,9 @@ public class NumberSchema extends BaseSchema<NumberSchema, Number> {
         return this;
     }
 
-    public NumberSchema range(Integer min, Integer max) {
-        this.min = min;
-        this.max = max;
+    public NumberSchema range(Integer minValue, Integer maxValue) {
+        this.min = minValue;
+        this.max = maxValue;
         return this;
     }
 
