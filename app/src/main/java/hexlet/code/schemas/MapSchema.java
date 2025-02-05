@@ -21,8 +21,8 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
         return this;
     }
 
-    public MapSchema shape(Map<String, BaseSchema<?>> newShape) {
-        this.shape = newShape;
+    public <T> MapSchema shape(Map<String, BaseSchema<T>> newShape) {
+        this.shape = (Map<String, BaseSchema<?>>) (Map<?, ?>) newShape;
         return this;
     }
 
