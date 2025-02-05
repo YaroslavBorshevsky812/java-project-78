@@ -94,7 +94,7 @@ public class ValidatorTest {
 
         var schema = v.map();
 
-        Map<String, BaseSchema<?, ?>> schemas = new HashMap<>();
+        Map<String, BaseSchema<?>> schemas = new HashMap<>();
 
         schemas.put("firstName", v.string().required());
 

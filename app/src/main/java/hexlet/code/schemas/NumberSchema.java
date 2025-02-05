@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class NumberSchema extends BaseSchema<NumberSchema, Number> {
+public class NumberSchema extends BaseSchema<NumberSchema> {
     private boolean positive = false;
     private Integer min;
     private Integer max;
@@ -16,17 +16,25 @@ public class NumberSchema extends BaseSchema<NumberSchema, Number> {
         return this;
     }
 
-    public boolean isValid(Number value) {
+    @Override
+    public boolean isValid(Object value) {
         if (value == null) {
             return !isRequired();
         }
-        if (positive && value.doubleValue() <= 0) {
+
+        if (!(value instanceof Number)) {
             return false;
         }
-        if (min != null && value.intValue() < min) {
+
+        Number numberValue = (Number) value;
+
+        if (positive && numberValue.doubleValue() <= 0) {
             return false;
         }
-        if (max != null && value.intValue() > max) {
+        if (min != null && numberValue.intValue() < min) {
+            return false;
+        }
+        if (max != null && numberValue.intValue() > max) {
             return false;
         }
 
