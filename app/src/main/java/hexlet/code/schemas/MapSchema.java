@@ -18,23 +18,16 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
 
     public MapSchema sizeof(Integer newSize) {
         this.size = newSize;
+        addCheck(value -> size == null || value.size() == size);
         return this;
     }
 
     public <T> MapSchema shape(Map<String, BaseSchema<T>> newShape) {
         this.shape = (Map<String, BaseSchema<?>>) (Map<?, ?>) newShape;
-        return this;
-    }
-
-    @Override
-    public boolean isValid(Map<?, ?> value) {
-        if (value == null) {
-            return !isRequired();
-        }
-        if (size != null && value.size() != size) {
-            return false;
-        }
-        if (shape != null) {
+        addCheck(value -> {
+            if (shape == null) {
+                return true;
+            }
             for (Map.Entry<String, BaseSchema<?>> entry : shape.entrySet()) {
                 String key = entry.getKey();
                 BaseSchema<?> schema = entry.getValue();
@@ -46,8 +39,17 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
                     return false;
                 }
             }
+            return true;
+        });
+        return this;
+    }
+
+    @Override
+    public boolean isValid(Map<?, ?> value) {
+        if (value == null) {
+            return !isRequired();
         }
-        return true;
+        return validate(value);
     }
 
     private <V> boolean isValid(BaseSchema<V> schema, Object value) {
