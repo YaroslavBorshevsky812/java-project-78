@@ -13,7 +13,7 @@ public abstract class BaseSchema<T> {
         checkList.add(predicate);
     }
 
-    protected boolean validate(T value) {
+    final boolean validate(T value) {
         return checkList.stream().allMatch(predicate -> predicate.test(value));
     }
 }
