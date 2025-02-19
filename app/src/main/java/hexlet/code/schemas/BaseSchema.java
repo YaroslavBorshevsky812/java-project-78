@@ -9,7 +9,7 @@ public abstract class BaseSchema<T> {
 
     public abstract boolean isValid(T value);
 
-    protected void addCheck(Predicate<T> predicate) {
+    final void addCheck(Predicate<T> predicate) {
         checkList.add(predicate);
     }
 
