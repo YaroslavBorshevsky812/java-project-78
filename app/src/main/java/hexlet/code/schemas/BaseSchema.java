@@ -10,6 +10,7 @@ public abstract class BaseSchema<T> {
     protected Map<CheckList, Predicate> checkMap = new HashMap<>();
     protected boolean isRequired = false;
 
+    /** Please, fix this build. */
     public boolean isValid(T value) {
         if (value == null && !isRequired) {
             return true;
