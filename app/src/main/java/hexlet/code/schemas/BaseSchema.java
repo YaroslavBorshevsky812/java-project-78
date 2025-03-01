@@ -10,7 +10,12 @@ public abstract class BaseSchema<T> {
     protected Map<CheckList, Predicate> checkMap = new HashMap<>();
     protected boolean isRequired = false;
 
-    /** Please, fix this build. */
+    /**
+     * Проверяет, соответствует ли переданное значение всем условиям схемы.
+     *
+     * @param value Значение, которое нужно проверить.
+     * @return Возвращает true, если значение соответствует всем условиям схемы, иначе false.
+     */
     public boolean isValid(T value) {
         if (value == null && !isRequired) {
             return true;
