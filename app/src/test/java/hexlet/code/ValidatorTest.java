@@ -45,6 +45,8 @@ public class ValidatorTest {
 
         assertTrue(schema.isValid(5));
 
+
+
         assertTrue(schema.isValid(null));
         assertTrue(schema.positive().isValid(null));
 
