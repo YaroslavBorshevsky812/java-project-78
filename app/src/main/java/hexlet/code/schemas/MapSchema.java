@@ -1,7 +1,5 @@
 package hexlet.code.schemas;
 
-import hexlet.code.CheckList;
-
 import java.util.Map;
 import java.util.Objects;
 
@@ -17,13 +15,13 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
 
     public MapSchema sizeof(Integer newSize) {
         this.size = newSize;
-        addCheck(CheckList.SIZE_OF, value -> size == null || value.size() == size);
+        addCheck("SIZE_OF", value -> size == null || value.size() == size);
         return this;
     }
 
     public <T> MapSchema shape(Map<String, BaseSchema<T>> newShape) {
         this.shape = (Map<String, BaseSchema<?>>) (Map<?, ?>) newShape;
-        addCheck(CheckList.SHAPE, value -> {
+        addCheck("SHAPE", value -> {
             if (shape == null) {
                 return true;
             }

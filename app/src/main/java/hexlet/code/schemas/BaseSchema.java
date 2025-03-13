@@ -1,6 +1,5 @@
 package hexlet.code.schemas;
 
-import hexlet.code.CheckList;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public abstract class BaseSchema<T> {
-    protected Map<CheckList, Predicate<T>> checkMap = new HashMap<>();
+    protected Map<String, Predicate<T>> checkMap = new HashMap<>();
     protected boolean isRequired = false;
     protected Predicate<T> requiredRule = Objects::isNull;
 
@@ -26,7 +25,7 @@ public abstract class BaseSchema<T> {
         return checkMap.values().stream().allMatch(predicate -> predicate.test(value));
     };
 
-    final void addCheck(CheckList check, Predicate<T> predicate) {
+    final void addCheck(String check, Predicate<T> predicate) {
         checkMap.put(check, predicate);
     }
 }
