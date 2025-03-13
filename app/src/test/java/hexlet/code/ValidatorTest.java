@@ -38,6 +38,13 @@ public class ValidatorTest {
     }
 
     @Test
+    void checkSpecialString() {
+        var v = new Validator();
+        var schema = v.string();
+        assertTrue(schema.contains("watt").contains("wa").isValid("waaaaa"));
+    }
+
+    @Test
     void checkNumberSchema() {
         var v = new Validator();
 
@@ -49,6 +56,7 @@ public class ValidatorTest {
 
         assertTrue(schema.isValid(null));
         assertTrue(schema.positive().isValid(null));
+        assertFalse(schema.positive().isValid(-1));
 
         schema.required();
 

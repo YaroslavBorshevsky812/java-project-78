@@ -2,11 +2,13 @@ package hexlet.code.schemas;
 
 import hexlet.code.CheckList;
 
+import java.util.Objects;
+
 public final class NumberSchema extends BaseSchema<Number> {
 
     public NumberSchema required() {
         isRequired = true;
-        addCheck(CheckList.REQUIRED, x -> x != null);
+        requiredRule = Objects::nonNull;
 
         return this;
     }

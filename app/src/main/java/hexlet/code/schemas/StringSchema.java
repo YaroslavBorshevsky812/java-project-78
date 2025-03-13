@@ -7,7 +7,7 @@ public final class StringSchema extends BaseSchema<String> {
 
     public StringSchema required() {
         isRequired = true;
-        addCheck(CheckList.REQUIRED, x -> x != null && !x.isEmpty());
+        requiredRule = x -> x != null && !x.isEmpty();
         return this;
     }
 
