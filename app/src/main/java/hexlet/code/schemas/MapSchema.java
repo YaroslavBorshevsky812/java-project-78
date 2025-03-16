@@ -4,9 +4,6 @@ import java.util.Map;
 import java.util.Objects;
 
 public final class MapSchema extends BaseSchema<Map<?, ?>> {
-    private Integer size;
-    private Map<String, BaseSchema<?>> shape;
-
     public MapSchema required() {
         isRequired = true;
         requiredRule = Objects::nonNull;
@@ -14,40 +11,26 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
     }
 
     public MapSchema sizeof(Integer newSize) {
-        this.size = newSize;
-        addCheck("SIZE_OF", value -> size == null || value.size() == size);
+        addCheck("SIZE_OF", value -> newSize == null || value.size() == newSize);
         return this;
     }
 
     public <T> MapSchema shape(Map<String, BaseSchema<T>> newShape) {
-        this.shape = (Map<String, BaseSchema<?>>) (Map<?, ?>) newShape;
         addCheck("SHAPE", value -> {
-            if (shape == null) {
+            if (newShape == null) {
                 return true;
             }
-            return shape.entrySet().stream()
-                        .allMatch(entry -> {
-                            String key = entry.getKey();
-                            BaseSchema<?> schema = entry.getValue();
-                            if (!value.containsKey(key)) {
-                                return false;
-                            }
-                            Object mapValue = value.get(key);
-                            return isValid(schema, mapValue);
-                        });
+            return newShape.entrySet().stream()
+                           .allMatch(entry -> {
+                               String key = entry.getKey();
+                               if (!value.containsKey(key)) {
+                                   return false;
+                               }
+                               Object mapValue = value.get(key);
+                               BaseSchema<T> schema = entry.getValue();
+                               return schema.isValid((T) mapValue);
+                           });
         });
         return this;
-    }
-
-    private boolean isValid(BaseSchema<?> schema, Object value) {
-        if (value == null) {
-            return schema.isValid(null);
-        }
-        try {
-            var isValidMethod = schema.getClass().getMethod("isValid", Object.class);
-            return (boolean) isValidMethod.invoke(schema, value);
-        } catch (Exception e) {
-            return false;
-        }
     }
 }
